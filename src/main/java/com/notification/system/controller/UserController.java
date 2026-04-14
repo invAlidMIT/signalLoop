@@ -5,10 +5,9 @@ import com.notification.system.dto.UserResponseDTO;
 import com.notification.system.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -24,5 +23,10 @@ public class UserController {
     @PostMapping
     public UserResponseDTO createUser(@Valid @RequestBody UserRequestDTO userRequestDTO){
         return userService.createUser(userRequestDTO);
+    }
+
+    @GetMapping("/all")
+    public List<UserResponseDTO> getUsers(){
+        return userService.getUsers();
     }
 }
