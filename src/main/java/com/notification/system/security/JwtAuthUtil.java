@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -26,8 +27,8 @@ public class JwtAuthUtil {
                 .subject(user.getUsername())
                 .claim("userId",user.getId().toString())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000*60*5))
-                .signWith(getSecretkey())
+                .expiration(new Date(System.currentTimeMillis() + 1000*60*60*24))
+                .signWith(getSecretkey(),Jwts.SIG.HS256)
                 .compact();
     }
 
@@ -38,5 +39,19 @@ public class JwtAuthUtil {
                 .parseSignedClaims(token)
                 .getPayload();
         return claims.getSubject();
+    }
+
+    public boolean validateToken(String token, UserDetails user){
+        String username=getUsernameFromToken(token);
+        return username.equals(user.getUsername()) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        Claims claims=Jwts.parser()
+                .verifyWith(getSecretkey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.getExpiration().before(new Date());
     }
 }
