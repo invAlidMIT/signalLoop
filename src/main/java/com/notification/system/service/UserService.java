@@ -8,6 +8,8 @@ import com.notification.system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -21,5 +23,12 @@ public class UserService {
         User user= UserMapper.toEntity(userRequestDTO);
         User userSaved=userRepository.save(user);
         return UserMapper.toResponse(userSaved);
+    }
+
+    public List<UserResponseDTO> getUsers(){
+        return  userRepository.findAll().
+                stream().
+                map(UserMapper::toResponse).
+                toList();
     }
 }
