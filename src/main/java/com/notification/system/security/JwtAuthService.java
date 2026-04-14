@@ -6,7 +6,6 @@ import com.notification.system.dto.SignupResponseDTO;
 import com.notification.system.entity.User;
 import com.notification.system.repository.UserRepository;
 import jakarta.validation.Valid;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,19 +15,19 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AuthService {
+public class JwtAuthService {
 
     private final AuthenticationManager authenticationManager;
-    private final AuthUtil authUtil;
+    private final JwtAuthUtil jwtAuthUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthService(AuthenticationManager authenticationManager,
-                       AuthUtil authUtil,
-                       UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+    public JwtAuthService(AuthenticationManager authenticationManager,
+                          JwtAuthUtil jwtAuthUtil,
+                          UserRepository userRepository,
+                          PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
-        this.authUtil=authUtil;
+        this.jwtAuthUtil = jwtAuthUtil;
         this.userRepository=userRepository;
         this.passwordEncoder=passwordEncoder;
     }
@@ -40,7 +39,7 @@ public class AuthService {
 
         User user=(User) authentication.getPrincipal();
 
-        String token=authUtil.generateAccessToken(user);
+        String token= jwtAuthUtil.generateAccessToken(user);
         return new LoginResponseDTO(token,user.getId());
     }
 
@@ -55,4 +54,6 @@ public class AuthService {
                 signupRequestDTO.getTimezone()));
         return new SignupResponseDTO(user.getId(),user.getUsername());
     }
+
+
 }
