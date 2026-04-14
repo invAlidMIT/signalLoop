@@ -16,11 +16,6 @@ public class LoginRequestDTO {
     private String email;
     private String password;
     private String timezone;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Channel preferredChannel;
-
-    @CreationTimestamp
     private LocalDateTime createdAt;
 }
