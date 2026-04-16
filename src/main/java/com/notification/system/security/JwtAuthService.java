@@ -4,6 +4,7 @@ import com.notification.system.dto.LoginRequestDTO;
 import com.notification.system.dto.LoginResponseDTO;
 import com.notification.system.dto.SignupResponseDTO;
 import com.notification.system.entity.User;
+import com.notification.system.enums.Role;
 import com.notification.system.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -48,10 +49,12 @@ public class JwtAuthService {
         if(exist.isPresent()){
             throw new IllegalStateException("User is already there!");
         }
-        User user=userRepository.save(new User(signupRequestDTO.getEmail(),
+        User user=userRepository.save(
+                new User(signupRequestDTO.getEmail(),
                 passwordEncoder.encode(signupRequestDTO.getPassword()),
                 signupRequestDTO.getPreferredChannel(),
-                signupRequestDTO.getTimezone()));
+                signupRequestDTO.getTimezone(),
+                        Role.ROLE_USER));
         return new SignupResponseDTO(user.getId(),user.getUsername());
     }
 

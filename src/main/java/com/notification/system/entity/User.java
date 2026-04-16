@@ -1,6 +1,7 @@
 package com.notification.system.entity;
 
 import com.notification.system.enums.Channel;
+import com.notification.system.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -39,9 +41,13 @@ public class User implements UserDetails {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
@@ -54,10 +60,11 @@ public class User implements UserDetails {
         return this.email;
     }
 
-    public User(String email, String password,  Channel preferredChannel,String timezone) {
+    public User(String email, String password,  Channel preferredChannel,String timezone,Role role) {
         this.email = email;
         this.password = password;
         this.timezone = timezone;
         this.preferredChannel = preferredChannel;
+        this.role=role;
     }
 }
