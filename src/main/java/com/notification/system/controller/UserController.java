@@ -24,9 +24,4 @@ public class UserController {
     public UserResponseDTO createUser(@Valid @RequestBody UserRequestDTO userRequestDTO){
         return userService.createUser(userRequestDTO);
     }
-
-    @GetMapping("/all")
-    public List<UserResponseDTO> getUsers(){
-        return userService.getUsers();
-    }
 }
