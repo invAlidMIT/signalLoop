@@ -3,6 +3,8 @@ package com.notification.system.notification.service;
 import com.notification.system.notification.dto.NotificationRequestDTO;
 import com.notification.system.notification.dto.NotificationResponseDTO;
 import com.notification.system.notification.entity.Notification;
+import com.notification.system.notification.strategy.NotificationSender;
+import com.notification.system.notification.strategy.NotificationSenderFactory;
 import com.notification.system.user.entity.User;
 import com.notification.system.notification.enums.NotificationStatus;
 import com.notification.system.notification.mapper.NotificationMapper;
@@ -20,6 +22,7 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
     private final NotificationMapper notificationMapper;
+    private final NotificationSenderFactory senderFactory;
 
     public NotificationResponseDTO send(NotificationRequestDTO requestDTO){
         User user=userRepository.findById(requestDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -27,7 +30,8 @@ public class NotificationService {
         notification.setUser(user);
         notification.setChannel(user.getPreferredChannel());
         notification.setRetryCount(0);
-        Boolean sentOrNot=sendThroughChannel(notification);
+        NotificationSender sender= senderFactory.getSender(notification.getChannel());
+        Boolean sentOrNot=sender.send(user,notification);
         notification.setNotificationStatus(
                 sentOrNot ?
                 NotificationStatus.SENT
