@@ -40,24 +40,4 @@ public class NotificationService {
         return notificationMapper.toResponse(savedNotification);
     }
 
-    public boolean sendThroughChannel(Notification notification){
-        switch (notification.getChannel()) {
-            case SMS -> {
-                System.out.println("Sending through SMS: " + notification.getMessage());
-                return true;
-            }
-            case EMAIL -> {
-                System.out.println("Sending through Email: " + notification.getMessage());
-            return true;
-        }
-            case PUSH-> {
-                System.out.println("Sending through PUSH: " + notification.getMessage());
-                return true;
-            }
-            default -> {
-                return false;
-            }
-        }
-    }
-
 }
