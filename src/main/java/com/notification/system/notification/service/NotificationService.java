@@ -25,11 +25,8 @@ public class NotificationService {
     private final NotificationSenderFactory senderFactory;
 
     public NotificationResponseDTO send(NotificationRequestDTO requestDTO){
+        Notification notification=create(requestDTO);
         User user=userRepository.findById(requestDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-        Notification notification=notificationMapper.toEntity(requestDTO);
-        notification.setUser(user);
-        notification.setChannel(user.getPreferredChannel());
-        notification.setRetryCount(0);
         NotificationSender sender= senderFactory.getSender(notification.getChannel());
         Boolean sentOrNot=sender.send(user,notification);
         notification.setNotificationStatus(
@@ -38,6 +35,16 @@ public class NotificationService {
                 : NotificationStatus.FAILED);
         Notification savedNotification=notificationRepository.save(notification);
         return notificationMapper.toResponse(savedNotification);
+    }
+
+    public Notification create(NotificationRequestDTO requestDTO){
+        User user=userRepository.findById(requestDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        Notification notification=notificationMapper.toEntity(requestDTO);
+        notification.setUser(user);
+        notification.setChannel(user.getPreferredChannel());
+        notification.setRetryCount(0);
+        notification.setNotificationStatus(NotificationStatus.PENDING);
+        return notificationRepository.save(notification);
     }
 
 }
