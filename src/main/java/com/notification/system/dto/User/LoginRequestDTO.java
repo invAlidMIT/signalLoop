@@ -1,12 +1,8 @@
-package com.notification.system.dto;
+package com.notification.system.dto.User;
 
 import com.notification.system.enums.Channel;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 

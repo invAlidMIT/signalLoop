@@ -1,8 +1,7 @@
 package com.notification.system.controller;
 
-import com.notification.system.dto.UserRequestDTO;
-import com.notification.system.dto.UserResponseDTO;
-import com.notification.system.entity.User;
+import com.notification.system.dto.User.UserRequestDTO;
+import com.notification.system.dto.User.UserResponseDTO;
 import com.notification.system.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;

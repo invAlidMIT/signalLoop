@@ -1,13 +1,11 @@
 package com.notification.system.controller;
 
-import com.notification.system.dto.UserRequestDTO;
-import com.notification.system.dto.UserResponseDTO;
+import com.notification.system.dto.User.UserRequestDTO;
+import com.notification.system.dto.User.UserResponseDTO;
 import com.notification.system.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")

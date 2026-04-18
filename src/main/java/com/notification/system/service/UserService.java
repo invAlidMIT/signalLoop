@@ -1,7 +1,7 @@
 package com.notification.system.service;
 
-import com.notification.system.dto.UserRequestDTO;
-import com.notification.system.dto.UserResponseDTO;
+import com.notification.system.dto.User.UserRequestDTO;
+import com.notification.system.dto.User.UserResponseDTO;
 import com.notification.system.entity.User;
 import com.notification.system.enums.Role;
 import com.notification.system.mapper.UserMapper;

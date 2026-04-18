@@ -1,4 +1,4 @@
-package com.notification.system.dto;
+package com.notification.system.dto.User;
 
 import com.notification.system.enums.Channel;
 import lombok.Getter;

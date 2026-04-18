@@ -1,10 +1,8 @@
 package com.notification.system.mapper;
 
-import com.notification.system.dto.UserRequestDTO;
-import com.notification.system.dto.UserResponseDTO;
+import com.notification.system.dto.User.UserRequestDTO;
+import com.notification.system.dto.User.UserResponseDTO;
 import com.notification.system.entity.User;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
