@@ -1,8 +1,8 @@
 package com.notification.system.controller;
 
-import com.notification.system.dto.LoginRequestDTO;
-import com.notification.system.dto.LoginResponseDTO;
-import com.notification.system.dto.SignupResponseDTO;
+import com.notification.system.dto.User.LoginRequestDTO;
+import com.notification.system.dto.User.LoginResponseDTO;
+import com.notification.system.dto.User.SignupResponseDTO;
 import com.notification.system.security.JwtAuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
