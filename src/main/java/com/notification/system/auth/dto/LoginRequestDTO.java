@@ -1,0 +1,17 @@
+package com.notification.system.auth.dto;
+
+import com.notification.system.user.enums.Channel;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+public class LoginRequestDTO {
+    private String email;
+    private String password;
+    private String timezone;
+    private Channel preferredChannel;
+    private LocalDateTime createdAt;
+}
