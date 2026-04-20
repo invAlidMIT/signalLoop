@@ -7,6 +7,9 @@ import com.notification.system.auth.enums.Role;
 import com.notification.system.user.mapper.UserMapper;
 import com.notification.system.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -21,13 +25,16 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO){
+        log.info("Creating user with email={}", userRequestDTO.getEmail());
         if(userRepository.findByEmail(userRequestDTO.getEmail()).isPresent()){
+            log.warn("User creation failed: email already exists, email={}", userRequestDTO.getEmail());
             throw new IllegalStateException("Email already exists");
         }
         User user= userMapper.toEntity(userRequestDTO);
         user.setRole(Role.ROLE_USER);
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         User userSaved=userRepository.save(user);
+        log.info("User created successfully with id={}", userSaved.getId());
         return userMapper.toResponse(userSaved);
     }
 
@@ -39,12 +46,15 @@ public class UserService {
     }
 
     public UserResponseDTO createAdmin(UserRequestDTO userRequestDTO){
+        log.info("Creating ADMIN user with email={}", dto.getEmail());
         if(userRepository.findByEmail(userRequestDTO.getEmail()).isPresent()){
+            log.warn("Admin creation failed: email already exists, email={}", userRequestDTO.getEmail());
             throw new IllegalStateException("Email already exists");
         }
         User user=userMapper.toEntity(userRequestDTO);
         user.setRole(Role.ROLE_ADMIN);
         User userSaved=userRepository.save(user);
+        log.info("Admin created successfully with id={}", saved.getId());
         return userMapper.toResponse(userSaved);
     }
 }
