@@ -6,10 +6,9 @@ import com.notification.system.notification.service.NotificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/notifications")
@@ -20,6 +19,16 @@ public class NotificationController {
 
     @PostMapping
     public ResponseEntity<NotificationResponseDTO> sendNotification(@Valid @RequestBody NotificationRequestDTO requestDTO){
-        return ResponseEntity.ok(notificationService.send(requestDTO));
+        return ResponseEntity.ok(notificationService.create(requestDTO));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<NotificationResponseDTO> getNotificationById(@PathVariable Long id){
+        return ResponseEntity.ok(notificationService.findById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<NotificationResponseDTO>> getAll(){
+        return ResponseEntity.ok(notificationService.getAll());
     }
 }

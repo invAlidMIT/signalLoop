@@ -16,4 +16,5 @@ public class NotificationResponseDTO {
     private LocalDateTime createdAt;
     private Channel channel;
     private String message;
+    private int retryCount;
 }

@@ -23,7 +23,8 @@ public class NotificationMapper {
                 notification.getNotificationStatus(),
                 notification.getCreatedAt(),
                 notification.getChannel(),
-                notification.getMessage()
+                notification.getMessage(),
+                notification.getRetryCount()
         );
         return responseDTO;
     }
