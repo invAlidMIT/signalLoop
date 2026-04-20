@@ -1,5 +1,7 @@
 package com.notification.system.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.notification.system.notification.entity.Notification;
 import com.notification.system.user.enums.Channel;
 import com.notification.system.auth.enums.Role;
 import jakarta.persistence.*;
@@ -44,6 +46,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Notification> notifications;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
