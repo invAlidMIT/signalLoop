@@ -23,6 +23,7 @@ import static com.notification.system.user.enums.Channel.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
@@ -47,18 +48,29 @@ public class NotificationService {
     }
 
     private NotificationResponseDTO processNotification(User user,Notification notification) {
+        log.info("Processing notification id={}", notification.getId());
         boolean sentOrNot=false;
         int retryCount=0;
         while (!sentOrNot && retryCount<3){
+            log.info("Attempt {} for notification id={}",
+                    retryCount + 1,
+                    notification.getId());
             notification.setNotificationStatus(NotificationStatus.RETRYING);
+            log.info("Attempt {} for notification id={}",
+                    retryCount + 1,
+                    notification.getId());
             sentOrNot=send(user,notification);
             retryCount++;
         }
         notification.setRetryCount(retryCount);
-        notification.setNotificationStatus(
-                sentOrNot ?
-                        NotificationStatus.SENT
-                        : NotificationStatus.FAILED);
+        if (sentOrNot) {
+            notification.setNotificationStatus(NotificationStatus.SENT);
+            log.info("Notification id={} sent successfully", notification.getId());
+        } else {
+            notification.setNotificationStatus(NotificationStatus.FAILED);
+            log.error("Notification id={} failed after {} attempts",
+                    notification.getId(), retryCount);
+        }
         Notification updated = notificationRepository.save(notification);
         return notificationMapper.toResponse(updated);
     }
