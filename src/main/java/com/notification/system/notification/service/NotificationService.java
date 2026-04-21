@@ -3,38 +3,25 @@ package com.notification.system.notification.service;
 import com.notification.system.notification.dto.NotificationRequestDTO;
 import com.notification.system.notification.dto.NotificationResponseDTO;
 import com.notification.system.notification.entity.Notification;
-import com.notification.system.notification.strategy.NotificationSender;
-import com.notification.system.notification.strategy.NotificationSenderFactory;
 import com.notification.system.user.entity.User;
 import com.notification.system.notification.enums.NotificationStatus;
 import com.notification.system.notification.mapper.NotificationMapper;
 import com.notification.system.notification.repository.NotificationRepository;
 import com.notification.system.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
-
-import static com.notification.system.user.enums.Channel.*;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
     private final NotificationMapper notificationMapper;
-    private final NotificationSenderFactory senderFactory;
+    private final NotificationProcessor notificationProcessor;
 
-    public boolean send(User user,Notification notification){
-        NotificationSender sender= senderFactory.getSender(notification.getChannel());
-        return Math.random()>0.3;
-    }
 
     public NotificationResponseDTO create(NotificationRequestDTO requestDTO){
         User user=userRepository.findById(requestDTO.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -44,35 +31,7 @@ public class NotificationService {
         notification.setRetryCount(0);
         notification.setNotificationStatus(NotificationStatus.PENDING);
         Notification saved=notificationRepository.save(notification);
-        return processNotification(user,saved);
-    }
-
-    private NotificationResponseDTO processNotification(User user,Notification notification) {
-        log.info("Processing notification id={}", notification.getId());
-        boolean sentOrNot=false;
-        int retryCount=0;
-        while (!sentOrNot && retryCount<3){
-            log.info("Attempt {} for notification id={}",
-                    retryCount + 1,
-                    notification.getId());
-            notification.setNotificationStatus(NotificationStatus.RETRYING);
-            log.info("Attempt {} for notification id={}",
-                    retryCount + 1,
-                    notification.getId());
-            sentOrNot=send(user,notification);
-            retryCount++;
-        }
-        notification.setRetryCount(retryCount);
-        if (sentOrNot) {
-            notification.setNotificationStatus(NotificationStatus.SENT);
-            log.info("Notification id={} sent successfully", notification.getId());
-        } else {
-            notification.setNotificationStatus(NotificationStatus.FAILED);
-            log.error("Notification id={} failed after {} attempts",
-                    notification.getId(), retryCount);
-        }
-        Notification updated = notificationRepository.save(notification);
-        return notificationMapper.toResponse(updated);
+        return notificationProcessor.processNotification(user,saved);
     }
 
     public NotificationResponseDTO findById(Long id){

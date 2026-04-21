@@ -46,7 +46,7 @@ public class UserService {
     }
 
     public UserResponseDTO createAdmin(UserRequestDTO userRequestDTO){
-        log.info("Creating ADMIN user with email={}", dto.getEmail());
+        log.info("Creating ADMIN user with email={}", userRequestDTO.getEmail());
         if(userRepository.findByEmail(userRequestDTO.getEmail()).isPresent()){
             log.warn("Admin creation failed: email already exists, email={}", userRequestDTO.getEmail());
             throw new IllegalStateException("Email already exists");
@@ -54,7 +54,7 @@ public class UserService {
         User user=userMapper.toEntity(userRequestDTO);
         user.setRole(Role.ROLE_ADMIN);
         User userSaved=userRepository.save(user);
-        log.info("Admin created successfully with id={}", saved.getId());
+        log.info("Admin created successfully with id={}", userSaved.getId());
         return userMapper.toResponse(userSaved);
     }
 }
