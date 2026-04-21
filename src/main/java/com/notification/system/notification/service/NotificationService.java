@@ -9,6 +9,7 @@ import com.notification.system.notification.mapper.NotificationMapper;
 import com.notification.system.notification.repository.NotificationRepository;
 import com.notification.system.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +32,8 @@ public class NotificationService {
         notification.setRetryCount(0);
         notification.setNotificationStatus(NotificationStatus.PENDING);
         Notification saved=notificationRepository.save(notification);
-        return notificationProcessor.processNotification(user,saved);
+        notificationProcessor.processNotification(user,saved);
+        return notificationMapper.toResponse(saved);
     }
 
     public NotificationResponseDTO findById(Long id){

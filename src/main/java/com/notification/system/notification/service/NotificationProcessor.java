@@ -14,6 +14,7 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,13 +27,16 @@ public class NotificationProcessor {
     private final NotificationSenderFactory senderFactory;
     private final NotificationMapper notificationMapper;
 
+    @Async("AsyncNotificationExecutor")
     @Retryable(
             value = RuntimeException.class,
             maxAttempts = 5,
             backoff = @Backoff(delay = 1000,multiplier = 2.0)
     )
-        public NotificationResponseDTO processNotification(User user, Notification notification){
-            log.info("Processing notification id={}", notification.getId());
+        public void processNotification(User user, Notification notification){
+        log.info("Processing notification {} on thread {}",
+                notification.getId(),
+                Thread.currentThread().getName());
         NotificationSender notificationSender= senderFactory.getSender(notification.getChannel());
 
             boolean success=notificationSender.send(user,notification);
@@ -44,9 +48,8 @@ public class NotificationProcessor {
                 throw new RuntimeException("Send failed");
             }
             notification.setNotificationStatus(NotificationStatus.SENT);
-            Notification saved=notificationRepository.save(notification);
+            notificationRepository.save(notification);
             log.info("Notification id={} sent successfully", notification.getId());
-            return notificationMapper.toResponse(saved);
         }
 
         @Recover
