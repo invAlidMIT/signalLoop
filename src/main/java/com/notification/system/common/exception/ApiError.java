@@ -1,8 +1,7 @@
-package com.notification.system.exceptionHandling;
+package com.notification.system.common.exception;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 

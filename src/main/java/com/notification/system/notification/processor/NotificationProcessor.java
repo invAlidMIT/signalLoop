@@ -1,4 +1,4 @@
-package com.notification.system.notification.service;
+package com.notification.system.notification.processor;
 
 import com.notification.system.notification.dto.NotificationResponseDTO;
 import com.notification.system.notification.entity.Notification;
@@ -27,7 +27,11 @@ public class NotificationProcessor {
     private final NotificationSenderFactory senderFactory;
     private final NotificationMapper notificationMapper;
 
-    @Async("AsyncNotificationExecutor")
+    @Async("notificationExecutor")
+    public void processNotificationAsync(User user,Notification notification){
+        processNotification(user,notification);
+    }
+
     @Retryable(
             value = RuntimeException.class,
             maxAttempts = 5,
@@ -39,7 +43,7 @@ public class NotificationProcessor {
                 Thread.currentThread().getName());
         NotificationSender notificationSender= senderFactory.getSender(notification.getChannel());
 
-            boolean success=notificationSender.send(user,notification);
+            boolean success=notificationSender.sendNotification(user,notification);
             if(!success){
                 log.warn("Send failed for notification id={}, retrying...", notification.getId());
                 notification.setRetryCount(notification.getRetryCount()+1);

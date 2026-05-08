@@ -42,9 +42,7 @@ public class Notification {
     private String message;
 
     public Notification(
-                        NotificationStatus notificationStatus,
                         String message){
-        this.notificationStatus=notificationStatus;
         this.message=message;
     }
 }

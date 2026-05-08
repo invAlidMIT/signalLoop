@@ -6,25 +6,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class NotificationSenderFactory {
     private final Map<Channel,NotificationSender> senderMap;
 
     public NotificationSenderFactory(List<NotificationSender> senders){
-        senderMap=Map.of(
-                Channel.EMAIL,senders.stream()
-                        .filter(s -> s instanceof EmailSender)
-                        .findFirst().orElseThrow(),
-
-                Channel.SMS,senders.stream()
-                        .filter(s-> s instanceof SmsSender)
-                        .findFirst().orElseThrow(),
-
-                Channel.PUSH,senders.stream()
-                        .filter(s-> s instanceof PushSender)
-                        .findFirst().orElseThrow()
-        );
+        senderMap=senders.stream()
+                .collect(Collectors.toMap(NotificationSender::getChannel,s->s));
     }
 
     public NotificationSender getSender(Channel channel){

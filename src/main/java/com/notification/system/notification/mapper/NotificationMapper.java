@@ -11,15 +11,15 @@ public class NotificationMapper {
 
     public Notification toEntity(NotificationRequestDTO requestDTO){
         Notification notification=new Notification(
-                NotificationStatus.PENDING,
                 requestDTO.getMessage()
         );
         return notification;
     }
 
     public NotificationResponseDTO toResponse(Notification notification){
+        Long userId=notification.getUser()!=null ? notification.getUser().getId():null;
         NotificationResponseDTO responseDTO=new NotificationResponseDTO(
-                notification.getUser().getId(),
+                userId,
                 notification.getNotificationStatus(),
                 notification.getCreatedAt(),
                 notification.getChannel(),
