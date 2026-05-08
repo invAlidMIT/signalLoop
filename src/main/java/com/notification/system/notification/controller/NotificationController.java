@@ -35,7 +35,12 @@ public class NotificationController {
     }
 
     @GetMapping("/status/{notificationStatus}")
-    public ResponseEntity<List<NotificationResponseDTO>> getNotificationByStatus(@PathVariable NotificationStatus notificationStatus){
+    public ResponseEntity<List<NotificationResponseDTO>> getNotificationsByStatus(@PathVariable NotificationStatus notificationStatus){
         return ResponseEntity.ok(notificationService.findNotificationByStatus(notificationStatus));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<NotificationResponseDTO>> getNotificationsByUserId(@PathVariable Long userId){
+        return ResponseEntity.ok(notificationService.findNotificationByUser(userId));
     }
 }
