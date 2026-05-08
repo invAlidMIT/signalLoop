@@ -28,6 +28,10 @@ public class NotificationProcessor {
     private final NotificationMapper notificationMapper;
 
     @Async("notificationExecutor")
+    public void processNotificationAsync(User user,Notification notification){
+        processNotification(user,notification);
+    }
+
     @Retryable(
             value = RuntimeException.class,
             maxAttempts = 5,

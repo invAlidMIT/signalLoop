@@ -50,7 +50,7 @@ public class NotificationService {
     }
 
     public List<NotificationResponseDTO> findNotificationByStatus(NotificationStatus status) {
-        return notificationRepository.findNotificationBynotificationStatus(status)
+        return notificationRepository.findByNotificationStatus(status)
                 .stream()
                 .map(notificationMapper::toResponse)
                 .toList();

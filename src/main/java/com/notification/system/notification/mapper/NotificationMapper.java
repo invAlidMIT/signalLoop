@@ -17,8 +17,9 @@ public class NotificationMapper {
     }
 
     public NotificationResponseDTO toResponse(Notification notification){
+        Long userId=notification.getUser()!=null ? notification.getUser().getId():null;
         NotificationResponseDTO responseDTO=new NotificationResponseDTO(
-                notification.getUser().getId(),
+                userId,
                 notification.getNotificationStatus(),
                 notification.getCreatedAt(),
                 notification.getChannel(),
