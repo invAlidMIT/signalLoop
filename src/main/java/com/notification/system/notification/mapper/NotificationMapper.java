@@ -11,7 +11,6 @@ public class NotificationMapper {
 
     public Notification toEntity(NotificationRequestDTO requestDTO){
         Notification notification=new Notification(
-                NotificationStatus.PENDING,
                 requestDTO.getMessage()
         );
         return notification;

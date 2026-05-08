@@ -6,14 +6,13 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 @EnableAsync
 public class AsyncConfig {
 
-    @Bean("AsyncNotificationExecutor")
-    public Executor asyncTaskExecutor(){
+    @Bean("notificationExecutor")
+    public Executor TaskExecutor(){
         ThreadPoolTaskExecutor executor=new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);
         executor.setQueueCapacity(100);

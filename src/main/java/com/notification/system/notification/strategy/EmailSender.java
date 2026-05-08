@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailSender implements NotificationSender{
     @Override
-    public boolean send(User user, Notification notification) {
+    public boolean sendNotification(User user, Notification notification) {
         System.out.println("Sending to email: "+user.getEmail());
         return true;
     }
