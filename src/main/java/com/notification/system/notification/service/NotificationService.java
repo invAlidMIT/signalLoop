@@ -55,4 +55,12 @@ public class NotificationService {
                 .map(notificationMapper::toResponse)
                 .toList();
     }
+
+    public List<NotificationResponseDTO> findNotificationByUser(Long userId){
+        User user=userRepository.findById(userId).orElseThrow(()->new UsernameNotFoundException("user not found"));
+        return notificationRepository.findByUser(user)
+                .stream()
+                .map(notificationMapper::toResponse)
+                .toList();
+    }
 }
