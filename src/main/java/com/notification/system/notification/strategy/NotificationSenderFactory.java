@@ -14,7 +14,8 @@ public class NotificationSenderFactory {
 
     public NotificationSenderFactory(List<NotificationSender> senders){
         senderMap=senders.stream()
-                .collect(Collectors.toMap(NotificationSender::getChannel,s->s));
+                .collect(Collectors.toMap(NotificationSender::getChannel,
+                        s->s));
     }
 
     public NotificationSender getSender(Channel channel){

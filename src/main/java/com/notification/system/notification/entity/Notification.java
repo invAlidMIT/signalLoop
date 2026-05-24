@@ -1,5 +1,6 @@
 package com.notification.system.notification.entity;
 
+import com.notification.system.notification.scoringAlogirthm.enums.Urgency;
 import com.notification.system.user.entity.User;
 import com.notification.system.user.enums.Channel;
 import com.notification.system.notification.enums.NotificationStatus;
@@ -41,8 +42,12 @@ public class Notification {
     @NotBlank
     private String message;
 
+    @Enumerated(EnumType.STRING)
+    private Urgency urgency;
+
     public Notification(
-                        String message){
+                        String message,Urgency urgency){
         this.message=message;
+        this.urgency=urgency;
     }
 }
