@@ -3,7 +3,6 @@ package com.notification.system.notification.controller;
 import com.notification.system.notification.dto.NotificationRequestDTO;
 import com.notification.system.notification.dto.NotificationResponseDTO;
 import com.notification.system.notification.enums.NotificationStatus;
-import com.notification.system.notification.exception.NotificationNotFoundException;
 import com.notification.system.notification.service.NotificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
