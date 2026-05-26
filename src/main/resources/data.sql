@@ -58,16 +58,16 @@ INSERT INTO notifications
 VALUES
 
 -- HIGH
-((SELECT id FROM users WHERE email='xys@gmail.com),'PENDING',0,NOW(),'PUSH','Server CPU usage critical','HIGH'),
-((SELECT id FROM users WHERE email='xys@gmail.com'),'PENDING',0,NOW(),'SMS','Payment failed for customer','HIGH'),
-((SELECT id FROM users WHERE email='xys@gmail.com'),'PENDING',0,NOW(),'EMAIL','Security alert login attempt','HIGH'),
+(1,'PENDING',0,NOW(),'PUSH','Server CPU usage critical','HIGH'),
+(1,'PENDING',0,NOW(),'SMS','Payment failed for customer','HIGH'),
+(1,'PENDING',0,NOW(),'EMAIL','Security alert login attempt','HIGH'),
 
 -- MEDIUM
-((SELECT id FROM users WHERE email='xys@gmail.com'),'PENDING',0,NOW(),'EMAIL','Daily backup completed','MEDIUM'),
-((SELECT id FROM users WHERE email='xys@gmail.com'),'PENDING',0,NOW(),'SMS','Invoice generated successfully','MEDIUM'),
-((SELECT id FROM users WHERE email='xys@gmail.com'),'PENDING',0,NOW(),'PUSH','Weekly report ready','MEDIUM'),
+(1,'PENDING',0,NOW(),'EMAIL','Daily backup completed','MEDIUM'),
+(1,'PENDING',0,NOW(),'SMS','Invoice generated successfully','MEDIUM'),
+(1,'PENDING',0,NOW(),'PUSH','Weekly report ready','MEDIUM'),
 
 -- LOW
-((SELECT id FROM users WHERE email='xys@gmail.com'),'PENDING',0,NOW(),'EMAIL','Promotional offer available','LOW'),
-((SELECT id FROM users WHERE email='xys@gmail.com'),'PENDING',0,NOW(),'SMS','Newsletter published','LOW'),
-((SELECT id FROM users WHERE email='xys@gmail.com'),'PENDING',0,NOW(),'PUSH','App update available','LOW');
+(1,'PENDING',0,NOW(),'EMAIL','Promotional offer available','LOW'),
+(1,'PENDING',0,NOW(),'SMS','Newsletter published','LOW'),
+(1,'PENDING',0,NOW(),'PUSH','App update available','LOW');
