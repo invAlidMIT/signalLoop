@@ -4,7 +4,8 @@ import com.notification.system.notification.dto.NotificationRequestDTO;
 import com.notification.system.notification.dto.NotificationResponseDTO;
 import com.notification.system.notification.entity.Notification;
 import com.notification.system.notification.exception.NotificationNotFoundException;
-import com.notification.system.notification.processor.NotificationProcessor;
+import com.notification.system.notification.kafka.mapper.NotificationEventMapper;
+import com.notification.system.notification.kafka.service.EventProducerService;
 import com.notification.system.notification.scoringAlogirthm.DefaultChannelScoringStrategy;
 import com.notification.system.notification.scoringAlogirthm.dto.ScoresConfig;
 import com.notification.system.notification.scoringAlogirthm.service.ScoringConfigService;
@@ -29,9 +30,10 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
     private final NotificationMapper notificationMapper;
-    private final NotificationProcessor notificationProcessor;
     private final ScoringConfigService scoringConfigService;
     private final DefaultChannelScoringStrategy defaultChannelScoringStrategy;
+    private final EventProducerService eventProducerService;
+    private final NotificationEventMapper notificationEventMapper;
 
 
 
@@ -44,7 +46,7 @@ public class NotificationService {
         notification.setRetryCount(0);
         notification.setNotificationStatus(NotificationStatus.PENDING);
         Notification saved = notificationRepository.save(notification);
-        notificationProcessor.processNotification(user, saved);
+        eventProducerService.publish(notificationEventMapper.toNotificationEventDTO(saved,user));
         return notificationMapper.toResponse(saved);
     }
 

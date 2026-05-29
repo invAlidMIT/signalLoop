@@ -39,13 +39,13 @@ public class NotificationProcessor {
     )
         public void processNotification(User user, Notification notification){
         log.info("Processing notification {} on thread {}",
-                notification.getId(),
+                notification.getNotificationId(),
                 Thread.currentThread().getName());
         NotificationSender notificationSender= senderFactory.getSender(notification.getChannel());
 
             boolean success=notificationSender.sendNotification(user,notification);
             if(!success){
-                log.warn("Send failed for notification id={}, retrying...", notification.getId());
+                log.warn("Send failed for notification id={}, retrying...", notification.getNotificationId());
                 notification.setRetryCount(notification.getRetryCount()+1);
                 notification.setNotificationStatus(NotificationStatus.RETRYING);
                 notificationRepository.save(notification);
@@ -53,12 +53,12 @@ public class NotificationProcessor {
             }
             notification.setNotificationStatus(NotificationStatus.SENT);
             notificationRepository.save(notification);
-            log.info("Notification id={} sent successfully", notification.getId());
+            log.info("Notification id={} sent successfully", notification.getNotificationId());
         }
 
         @Recover
         public NotificationResponseDTO recover(RuntimeException e,User user,Notification notification){
-            log.error("Notification id={} failed after retries", notification.getId());
+            log.error("Notification id={} failed after retries", notification.getNotificationId());
             notification.setNotificationStatus(NotificationStatus.FAILED);
             Notification saved=notificationRepository.save(notification);
             return notificationMapper.toResponse(saved);
