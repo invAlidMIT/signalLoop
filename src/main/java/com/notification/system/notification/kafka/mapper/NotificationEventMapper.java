@@ -8,14 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotificationEventMapper {
 
-    public NotificationEventDTO toNotificationEventDTO(Notification notification,
-                                                       User user){
+    public NotificationEventDTO toNotificationEventDTO(Notification notification){
 
         NotificationEventDTO notificationEventDTO=new NotificationEventDTO();
         notificationEventDTO.setNotificationId(notification.getNotificationId());
-        notificationEventDTO.setUserId(user.getId());
-        notificationEventDTO.setMessage(notification.getMessage());
-        notificationEventDTO.setUrgency(notification.getUrgency());
         return notificationEventDTO;
     }
 }

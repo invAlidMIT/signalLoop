@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +47,7 @@ public class NotificationService {
         notification.setRetryCount(0);
         notification.setNotificationStatus(NotificationStatus.PENDING);
         Notification saved = notificationRepository.save(notification);
-        eventProducerService.publish(notificationEventMapper.toNotificationEventDTO(saved,user));
+        eventProducerService.publish(notificationEventMapper.toNotificationEventDTO(saved));
         return notificationMapper.toResponse(saved);
     }
 
@@ -88,5 +89,9 @@ public class NotificationService {
                 .map(Map.Entry::getKey)
                 .orElse(Channel.SMS);
 
+    }
+
+    public Optional<Notification> getNotificationByIdWithUser(long id){
+        return notificationRepository.findByIdWithUser(id);
     }
 }
