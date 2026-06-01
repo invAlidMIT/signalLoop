@@ -1,6 +1,7 @@
 package com.notification.system.common.exception;
 
 import com.notification.system.notification.exception.NotificationNotFoundException;
+import com.notification.system.notification.kafka.exception.NotificationDeliveryException;
 import com.notification.system.user.exception.EmailExistException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
@@ -102,6 +103,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ApiError.builder()
                         .status(HttpStatus.CONFLICT.value())
+                        .message(e.getMessage())
+                        .timestamp(LocalDateTime.now())
+                        .build()
+                );
+    }
+
+    @ExceptionHandler(NotificationDeliveryException.class)
+    public ResponseEntity<ApiError> notificationDeliveryException(NotificationDeliveryException e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiError.builder()
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .message(e.getMessage())
                         .timestamp(LocalDateTime.now())
                         .build()

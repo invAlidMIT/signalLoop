@@ -3,6 +3,7 @@ package com.notification.system.notification.processor;
 import com.notification.system.notification.dto.NotificationResponseDTO;
 import com.notification.system.notification.entity.Notification;
 import com.notification.system.notification.enums.NotificationStatus;
+import com.notification.system.notification.kafka.exception.NotificationDeliveryException;
 import com.notification.system.notification.mapper.NotificationMapper;
 import com.notification.system.notification.repository.NotificationRepository;
 import com.notification.system.notification.strategy.NotificationSender;
@@ -33,7 +34,7 @@ public class NotificationProcessor {
             notification.setRetryCount(notification.getRetryCount() + 1);
             notification.setNotificationStatus(NotificationStatus.RETRYING);
             notificationRepository.save(notification);
-            throw new RuntimeException("Send failed");
+            throw new NotificationDeliveryException("Send failed");
         }
         notification.setNotificationStatus(NotificationStatus.SENT);
         notificationRepository.save(notification);
