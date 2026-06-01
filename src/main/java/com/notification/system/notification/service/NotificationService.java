@@ -90,8 +90,4 @@ public class NotificationService {
                 .orElse(Channel.SMS);
 
     }
-
-    public Optional<Notification> getNotificationByIdWithUser(long id){
-        return notificationRepository.findByIdWithUser(id);
-    }
 }
