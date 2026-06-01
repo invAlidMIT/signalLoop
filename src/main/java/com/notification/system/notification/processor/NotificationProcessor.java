@@ -10,15 +10,9 @@ import com.notification.system.notification.strategy.NotificationSenderFactory;
 import com.notification.system.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
-@EnableRetry
 @Slf4j
 @RequiredArgsConstructor
 public class NotificationProcessor {
@@ -27,40 +21,22 @@ public class NotificationProcessor {
     private final NotificationSenderFactory senderFactory;
     private final NotificationMapper notificationMapper;
 
-    @Async("notificationExecutor")
-    public void processNotificationAsync(User user,Notification notification){
-        processNotification(user,notification);
-    }
-
-    @Retryable(
-            value = RuntimeException.class,
-            maxAttempts = 5,
-            backoff = @Backoff(delay = 1000,multiplier = 2.0)
-    )
-        public void processNotification(User user, Notification notification){
+    public void processNotification(User user, Notification notification) {
         log.info("Processing notification {} on thread {}",
                 notification.getNotificationId(),
                 Thread.currentThread().getName());
-        NotificationSender notificationSender= senderFactory.getSender(notification.getChannel());
+        NotificationSender notificationSender = senderFactory.getSender(notification.getChannel());
 
-            boolean success=notificationSender.sendNotification(user,notification);
-            if(!success){
-                log.warn("Send failed for notification id={}, retrying...", notification.getNotificationId());
-                notification.setRetryCount(notification.getRetryCount()+1);
-                notification.setNotificationStatus(NotificationStatus.RETRYING);
-                notificationRepository.save(notification);
-                throw new RuntimeException("Send failed");
-            }
-            notification.setNotificationStatus(NotificationStatus.SENT);
+        boolean success = notificationSender.sendNotification(user, notification);
+        if (!success) {
+            log.warn("Send failed for notification id={}, retrying...", notification.getNotificationId());
+            notification.setRetryCount(notification.getRetryCount() + 1);
+            notification.setNotificationStatus(NotificationStatus.RETRYING);
             notificationRepository.save(notification);
-            log.info("Notification id={} sent successfully", notification.getNotificationId());
+            throw new RuntimeException("Send failed");
         }
-
-        @Recover
-        public NotificationResponseDTO recover(RuntimeException e,User user,Notification notification){
-            log.error("Notification id={} failed after retries", notification.getNotificationId());
-            notification.setNotificationStatus(NotificationStatus.FAILED);
-            Notification saved=notificationRepository.save(notification);
-            return notificationMapper.toResponse(saved);
-        }
+        notification.setNotificationStatus(NotificationStatus.SENT);
+        notificationRepository.save(notification);
+        log.info("Notification id={} sent successfully", notification.getNotificationId());
+    }
 }
