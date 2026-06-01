@@ -7,14 +7,17 @@ import com.notification.system.notification.enums.NotificationStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notifications")
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 public class Notification {
 
