@@ -5,6 +5,7 @@ import com.notification.system.notification.enums.NotificationStatus;
 import com.notification.system.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,5 +21,5 @@ public interface NotificationRepository extends JpaRepository<Notification,Long>
             join fetch n.user where n.notificationId=:id
             """
     )
-    public Optional<Notification> findByIdWithUser(Long id);
+    public Optional<Notification> findByIdWithUser(@Param("id") Long id);
 }
