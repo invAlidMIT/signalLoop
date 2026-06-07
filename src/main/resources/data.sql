@@ -71,3 +71,11 @@ VALUES
 (1,'PENDING',0,NOW(),'EMAIL','Promotional offer available','LOW'),
 (1,'PENDING',0,NOW(),'SMS','Newsletter published','LOW'),
 (1,'PENDING',0,NOW(),'PUSH','App update available','LOW');
+
+--Channel Metrics
+INSERT INTO channel_metrics
+(channel,success_count,failure_count,retry_count)
+VALUES
+('SMS',0,0,0),
+('EMAIL',0,0,0),
+('PUSH',0,0,0);
