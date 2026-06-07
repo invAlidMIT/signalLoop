@@ -5,6 +5,7 @@ import com.notification.system.notification.enums.NotificationStatus;
 import com.notification.system.notification.exception.NotificationNotFoundException;
 import com.notification.system.notification.kafka.dto.NotificationEventDTO;
 import com.notification.system.notification.processor.NotificationProcessor;
+import com.notification.system.notification.reliabilityMetrics.service.ChannelMetricsService;
 import com.notification.system.notification.repository.NotificationRepository;
 import com.notification.system.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class NotificationEventConsumer {
     private static final Logger log = LoggerFactory.getLogger(NotificationEventConsumer.class);
     private final NotificationRepository notificationRepository;
     private final NotificationProcessor notificationProcessor;
+    private final ChannelMetricsService channelMetricsService;
 
     @RetryableTopic(attempts = "4",
     backOff = @BackOff(delay = 2000,multiplier = 1.5,maxDelay = 10000))
@@ -52,5 +54,10 @@ public class NotificationEventConsumer {
     public void ListenDlt(NotificationEventDTO notificationEventDTO){
         log.error("DLT received: "+"\n notification event id: "+
                 notificationEventDTO.getNotificationId());
+        Notification notification=notificationRepository.
+                findByIdWithUser(notificationEventDTO.getNotificationId())
+                .orElseThrow(()->new NotificationNotFoundException("Notification not found"));
+
+        channelMetricsService.recordFailure(notification.getChannel());
     }
 }
