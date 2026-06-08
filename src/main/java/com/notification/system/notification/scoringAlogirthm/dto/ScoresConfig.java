@@ -2,14 +2,16 @@ package com.notification.system.notification.scoringAlogirthm.dto;
 
 import com.notification.system.notification.scoringAlogirthm.enums.Factor;
 import com.notification.system.user.enums.Channel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
+import java.io.Serializable;
 import java.util.Map;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-public class ScoresConfig {
+public class ScoresConfig implements Serializable {
 
     private Map<Factor,Double> factorWeights;
     private Map<String,Double> UrgencyWeights;
