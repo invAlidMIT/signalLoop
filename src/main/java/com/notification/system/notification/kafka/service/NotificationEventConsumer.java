@@ -54,10 +54,15 @@ public class NotificationEventConsumer {
     public void ListenDlt(NotificationEventDTO notificationEventDTO){
         log.error("DLT received: "+"\n notification event id: "+
                 notificationEventDTO.getNotificationId());
-        Notification notification=notificationRepository.
+        notificationRepository.
                 findByIdWithUser(notificationEventDTO.getNotificationId())
-                .orElseThrow(()->new NotificationNotFoundException("Notification not found"));
+                .ifPresent(n->{
+                    n.setNotificationStatus(
+                            NotificationStatus.FAILED
+                    );
+        notificationRepository.save(n);
 
-        channelMetricsService.recordFailure(notification.getChannel());
+        channelMetricsService.recordFailure(n.getChannel());
+                });
     }
 }
