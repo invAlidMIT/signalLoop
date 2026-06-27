@@ -19,6 +19,7 @@ import com.notification.system.user.entity.User;
 import com.notification.system.user.enums.Channel;
 import com.notification.system.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
@@ -50,6 +52,11 @@ public class NotificationService {
         notification.setRetryCount(0);
         notification.setNotificationStatus(NotificationStatus.PENDING);
         Notification saved = notificationRepository.save(notification);
+        log.info("Notification created. notificationId={}, userId={}, channel={}",
+                saved.getNotificationId(),
+                user.getId(),
+                saved.getChannel()
+                );
         notificationAuditDTO.setNotificationId(saved.getNotificationId());
         notificationAuditService.createNotificationSelectionAudit(notificationAuditMapper.toEntity(notificationAuditDTO));
         eventProducerService.publish(notificationEventMapper.toNotificationEventDTO(saved));
