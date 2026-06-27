@@ -5,6 +5,8 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+      flywaydb: DEBUG
+      springframework.boot.autoconfigure.flyway: DEBUG
 spring:
   data:
     redis:
@@ -24,4 +26,4 @@ spring:
     show-sql: true
   sql:
     init:
-      mode: always
+      mode: never

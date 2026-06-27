@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class NotificationEventConsumer {
 
-    private static final Logger log = LoggerFactory.getLogger(NotificationEventConsumer.class);
     private final NotificationRepository notificationRepository;
     private final NotificationProcessor notificationProcessor;
     private final ChannelMetricsService channelMetricsService;
@@ -36,7 +35,7 @@ public class NotificationEventConsumer {
     )
     public void consume(NotificationEventDTO notificationEventDTO){
         log.info(
-                "Consumed notification event id={}",
+                "Notification event consumed. notificationId={}",
                 notificationEventDTO.getNotificationId()
         );
         Notification notification=notificationRepository.
@@ -52,7 +51,7 @@ public class NotificationEventConsumer {
 
     @DltHandler
     public void ListenDlt(NotificationEventDTO notificationEventDTO){
-        log.error("DLT received: "+"\n notification event id: "+
+        log.error("Notification moved to DLT. notificationId={}",
                 notificationEventDTO.getNotificationId());
         notificationRepository.
                 findByIdWithUser(notificationEventDTO.getNotificationId())
