@@ -1,27 +1,12 @@
-app:
-  partitionCount: 3
-  redis:
-    key:
-      scores_config: scores-config
-  replicaCount: 3
-  topicName: notification-events
 jwt:
-  secretKey: ${secretKey}
+  secretKey: ${JWT_SECRET}
 logging:
   level:
-    org:
-      hibernate:
-        SQL: DEBUG
-spring:
-  application:
-    name: system
-  cache:
-    cache-names: scores-config
-    type: redis
+    root:INFO
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
   datasource:
     password: ${DB_PASSWORD}
     url: ${DB_URL}
@@ -29,29 +14,13 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
-    show-sql: true
+    show-sql: false
   kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      auto-offset-reset: earliest
-      group-id: notification-group
-      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: '*'
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-    listener:
-      ack-mode: record
-      concurrency: 1
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.LongSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    bootstrap-servers: ${KAFKA_SERVERS}
   sql:
     init:
       mode: always

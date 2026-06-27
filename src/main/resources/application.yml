@@ -1,3 +1,11 @@
+app:
+  partitionCount: 3
+  redis:
+    key:
+      scores_config: scores-config
+  replicaCount: 3
+  topicName: notification-events
+
 spring:
   application:
     name: signalLoop
@@ -13,3 +21,26 @@ management:
     web:
       exposure:
         include: health,info
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      group-id: notification-group
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    listener:
+      ack-mode: record
+      concurrency: 1
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  cache:
+    cache-names: scores-config
+    type: redis
