@@ -1,13 +1,11 @@
 jwt:
-  secretKey: ${secretKey}
+  secretKey: ${JWT_SECRET}
 logging:
   level:
     org:
       hibernate:
         SQL: DEBUG
 spring:
-  application:
-    name: system
   data:
     redis:
       host: localhost

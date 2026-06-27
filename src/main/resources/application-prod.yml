@@ -3,6 +3,8 @@ jwt:
 logging:
   level:
     root:INFO
+
+spring:
   data:
     redis:
       host: ${REDIS_HOST}
