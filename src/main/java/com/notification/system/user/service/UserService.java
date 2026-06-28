@@ -55,6 +55,7 @@ public class UserService {
         }
         User user=userMapper.toEntity(userRequestDTO);
         user.setRole(Role.ROLE_ADMIN);
+        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         User userSaved=userRepository.save(user);
         log.info("Admin created successfully with id={}", userSaved.getId());
         return userMapper.toResponse(userSaved);

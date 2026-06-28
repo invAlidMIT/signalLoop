@@ -13,6 +13,7 @@ public class UserMapper {
         user.setEmail(userRequestDTO.getEmail());
         user.setPreferredChannel(userRequestDTO.getPreferredChannel());
         user.setTimezone(userRequestDTO.getTimezone());
+        user.setPassword(userRequestDTO.getPassword());
         return user;
     }
 
