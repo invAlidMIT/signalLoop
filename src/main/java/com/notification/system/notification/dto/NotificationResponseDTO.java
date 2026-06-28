@@ -2,13 +2,14 @@ package com.notification.system.notification.dto;
 
 import com.notification.system.user.enums.Channel;
 import com.notification.system.notification.enums.NotificationStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class NotificationResponseDTO {
 
     private Long userId;
