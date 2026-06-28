@@ -1,5 +1,6 @@
 jwt:
   secretKey: ${JWT_SECRET}
+
 logging:
   level:
     org:
@@ -7,6 +8,7 @@ logging:
         SQL: DEBUG
       flywaydb: DEBUG
       springframework.boot.autoconfigure.flyway: DEBUG
+
 spring:
   data:
     redis:
@@ -17,7 +19,6 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
   jpa:
-    defer-datasource-initialization: true
     hibernate:
       ddl-auto: validate
     properties:
