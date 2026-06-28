@@ -1,16 +1,15 @@
 package com.notification.system.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.notification.system.auth.enums.Role;
 import com.notification.system.notification.entity.Notification;
 import com.notification.system.user.enums.Channel;
-import com.notification.system.auth.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,7 +56,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public @Nullable String getPassword() {
+    public String getPassword() {
         return this.password;
     }
 
