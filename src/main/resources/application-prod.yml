@@ -1,8 +1,5 @@
 jwt:
   secretKey: ${JWT_SECRET}
-logging:
-  level:
-    root:INFO
 
 spring:
   data:
@@ -14,15 +11,12 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
   jpa:
-    defer-datasource-initialization: true
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
     show-sql: false
-  kafka:
-    bootstrap-servers: ${KAFKA_SERVERS}
   sql:
     init:
-      mode: always
+      mode: never
