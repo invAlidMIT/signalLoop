@@ -3,30 +3,22 @@ package com.notification.system.notification.mapper;
 import com.notification.system.notification.dto.NotificationRequestDTO;
 import com.notification.system.notification.dto.NotificationResponseDTO;
 import com.notification.system.notification.entity.Notification;
-import com.notification.system.notification.enums.NotificationStatus;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-@Component
-public class NotificationMapper {
+@Mapper(
+        componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+)
+public interface NotificationMapper {
 
-    public Notification toEntity(NotificationRequestDTO requestDTO){
-        Notification notification=new Notification(
-                requestDTO.getMessage(),
-                requestDTO.getUrgency()
-        );
-        return notification;
-    }
+    @Mapping(target = "notificationId",ignore = true)
+    @Mapping(target = "createdAt",ignore = true)
+    public Notification toEntity(NotificationRequestDTO requestDTO);
 
-    public NotificationResponseDTO toResponse(Notification notification){
-        Long userId=notification.getUser()!=null ? notification.getUser().getId():null;
-        NotificationResponseDTO responseDTO=new NotificationResponseDTO(
-                userId,
-                notification.getNotificationStatus(),
-                notification.getCreatedAt(),
-                notification.getChannel(),
-                notification.getMessage(),
-                notification.getRetryCount()
-        );
-        return responseDTO;
-    }
+    @Mapping(source="user.id",target = "userId")
+    public NotificationResponseDTO toResponse(Notification notification);
 }
