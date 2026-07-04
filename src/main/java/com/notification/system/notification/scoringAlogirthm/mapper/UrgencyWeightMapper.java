@@ -3,14 +3,16 @@ package com.notification.system.notification.scoringAlogirthm.mapper;
 
 import com.notification.system.notification.scoringAlogirthm.dto.UrgencyWeightResponseDTO;
 import com.notification.system.notification.scoringAlogirthm.entity.UrgencyWeight;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-@Component
-public class UrgencyWeightMapper {
+@Mapper(
+        componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+)
+public interface UrgencyWeightMapper {
 
-    public UrgencyWeightResponseDTO toResponse(UrgencyWeight urgencyWeight){
-        return new UrgencyWeightResponseDTO(urgencyWeight.getUrgency(),
-                urgencyWeight.getChannel(),
-                urgencyWeight.getUrgencyPercentage());
-    }
+    public UrgencyWeightResponseDTO toResponse(UrgencyWeight urgencyWeight);
 }
