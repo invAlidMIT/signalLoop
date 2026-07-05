@@ -4,6 +4,8 @@ import com.notification.system.auth.dto.LoginRequestDTO;
 import com.notification.system.auth.dto.LoginResponseDTO;
 import com.notification.system.auth.dto.SignupResponseDTO;
 import com.notification.system.auth.service.JwtAuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,11 @@ public class AuthController {
         this.jwtAuthService = jwtAuthService;
     }
 
+    @Operation(
+            summary = "Login",
+            description = "Authenticate user and return JWT"
+    )
+    @SecurityRequirements
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO){
         return ResponseEntity.ok(jwtAuthService.login(loginRequestDTO));
