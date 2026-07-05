@@ -28,3 +28,11 @@ spring:
   sql:
     init:
       mode: never
+
+info:
+  app:
+    name: signalLoop
+    description: Intelligent Event Driven Notification Platform
+    version: 1.0.0
+
+  developer: amit
