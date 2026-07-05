@@ -20,6 +20,8 @@ import com.notification.system.user.enums.Channel;
 import com.notification.system.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -67,11 +69,9 @@ public class NotificationService {
         return notificationMapper.toResponse(notificationRepository.findById(id).orElseThrow(() -> new NotificationNotFoundException("notification not found")));
     }
 
-    public List<NotificationResponseDTO> getAllNotifications() {
-        return notificationRepository.findAll()
-                .stream()
-                .map(notificationMapper::toResponse)
-                .toList();
+    public Page<NotificationResponseDTO> getAllNotifications(Pageable pageable) {
+        return notificationRepository.findAll(pageable)
+                .map(notificationMapper::toResponse);
     }
 
     public List<NotificationResponseDTO> findNotificationByStatus(NotificationStatus status) {

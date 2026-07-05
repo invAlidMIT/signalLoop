@@ -6,6 +6,10 @@ import com.notification.system.notification.enums.NotificationStatus;
 import com.notification.system.notification.service.NotificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +33,15 @@ public class NotificationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NotificationResponseDTO>> getAll(){
-        return ResponseEntity.ok(notificationService.getAllNotifications());
+    public ResponseEntity<Page<NotificationResponseDTO>> getAll(
+            @PageableDefault(size = 20,sort = "createdAt",
+                    direction = Sort.Direction.DESC)
+            Pageable pageable
+    ){
+        if(pageable.getPageSize()>100){
+            throw new IllegalStateException("page size must not exceed 100");
+        }
+        return ResponseEntity.ok(notificationService.getAllNotifications(pageable));
     }
 
     @GetMapping("/status/{notificationStatus}")

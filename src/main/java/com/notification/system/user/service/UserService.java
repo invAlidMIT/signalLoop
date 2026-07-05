@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,11 +42,9 @@ public class UserService {
         return userMapper.toResponse(userSaved);
     }
 
-    public List<UserResponseDTO> getUsers(){
-        return  userRepository.findAll().
-                stream().
-                map(userMapper::toResponse).
-                toList();
+    public Page<UserResponseDTO> getUsers(Pageable pageable){
+        return  userRepository.findAll(pageable).
+                map(userMapper::toResponse);
     }
 
     public UserResponseDTO createAdmin(UserRequestDTO userRequestDTO){
