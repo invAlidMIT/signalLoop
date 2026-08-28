@@ -6,6 +6,7 @@ import com.notification.system.notification.audit.mapper.NotificationAuditMapper
 import com.notification.system.notification.audit.repository.NotificationAuditRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class NotificationAuditService {
                 orElseThrow(()->new RuntimeException("Audit Not Found")));
     }
 
+    @Transactional
     public void createNotificationSelectionAudit(NotificationAudit notificationAudit){
         notificationAuditRepository.save(notificationAudit);
     }
