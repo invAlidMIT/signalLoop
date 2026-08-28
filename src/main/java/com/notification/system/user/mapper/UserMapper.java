@@ -3,26 +3,23 @@ package com.notification.system.user.mapper;
 import com.notification.system.user.dto.UserRequestDTO;
 import com.notification.system.user.dto.UserResponseDTO;
 import com.notification.system.user.entity.User;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-@Component
-public class UserMapper {
+@Mapper(
+        componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+)
+public interface UserMapper {
 
-    public  User toEntity(UserRequestDTO userRequestDTO){
-        User user=new User();
-        user.setEmail(userRequestDTO.getEmail());
-        user.setPreferredChannel(userRequestDTO.getPreferredChannel());
-        user.setTimezone(userRequestDTO.getTimezone());
-        return user;
-    }
+    @Mapping(target = "id",ignore = true)
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "password",ignore = true)
+    User toEntity(UserRequestDTO dto);
 
-    public  UserResponseDTO toResponse(User user){
-        UserResponseDTO userResponseDTO=new UserResponseDTO();
-        userResponseDTO.setId(user.getId());
-        userResponseDTO.setEmail(user.getEmail());
-        userResponseDTO.setPreferredChannel(user.getPreferredChannel());
-        userResponseDTO.setTimezone(user.getTimezone());
-        userResponseDTO.setCreatedAt(user.getCreatedAt());
-        return userResponseDTO;
-    }
+    UserResponseDTO toResponse(User user);
+
 }

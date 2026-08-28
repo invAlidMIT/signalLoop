@@ -2,16 +2,16 @@ package com.notification.system.notification.kafka.mapper;
 
 import com.notification.system.notification.entity.Notification;
 import com.notification.system.notification.kafka.dto.NotificationEventDTO;
-import com.notification.system.user.entity.User;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-@Component
-public class NotificationEventMapper {
+@Mapper(
+        componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+)
+public interface NotificationEventMapper {
 
-    public NotificationEventDTO toNotificationEventDTO(Notification notification){
-
-        NotificationEventDTO notificationEventDTO=new NotificationEventDTO();
-        notificationEventDTO.setNotificationId(notification.getNotificationId());
-        return notificationEventDTO;
-    }
+    public NotificationEventDTO toNotificationEventDTO(Notification notification);
 }

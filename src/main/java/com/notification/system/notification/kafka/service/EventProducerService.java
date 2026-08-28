@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class EventProducerService {
 
-    private static final Logger log = LoggerFactory.getLogger(EventProducerService.class);
     private final KafkaTemplate<Long,NotificationEventDTO> kafkaTemplate;
 
     public void publish(NotificationEventDTO notificationEventDTO){
@@ -25,11 +24,16 @@ public class EventProducerService {
                     notificationEventDTO
             );
 
-            log.info("Message published");
+            log.info(
+                    "Publishing notification event. notificationId={}",
+                    notificationEventDTO.getNotificationId()
+            );
         }
         catch (Exception e) {
             e.printStackTrace();
-            log.error("Kafka publish failed", e);
+            log.error("Notification publish failed, notificationId={}",
+                    notificationEventDTO.getNotificationId()
+                    );
         }
     }
 

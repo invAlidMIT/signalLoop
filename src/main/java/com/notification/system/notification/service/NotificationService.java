@@ -19,6 +19,9 @@ import com.notification.system.user.entity.User;
 import com.notification.system.user.enums.Channel;
 import com.notification.system.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
@@ -50,6 +54,11 @@ public class NotificationService {
         notification.setRetryCount(0);
         notification.setNotificationStatus(NotificationStatus.PENDING);
         Notification saved = notificationRepository.save(notification);
+        log.info("Notification created. notificationId={}, userId={}, channel={}",
+                saved.getNotificationId(),
+                user.getId(),
+                saved.getChannel()
+                );
         notificationAuditDTO.setNotificationId(saved.getNotificationId());
         notificationAuditService.createNotificationSelectionAudit(notificationAuditMapper.toEntity(notificationAuditDTO));
         eventProducerService.publish(notificationEventMapper.toNotificationEventDTO(saved));
@@ -60,11 +69,9 @@ public class NotificationService {
         return notificationMapper.toResponse(notificationRepository.findById(id).orElseThrow(() -> new NotificationNotFoundException("notification not found")));
     }
 
-    public List<NotificationResponseDTO> getAllNotifications() {
-        return notificationRepository.findAll()
-                .stream()
-                .map(notificationMapper::toResponse)
-                .toList();
+    public Page<NotificationResponseDTO> getAllNotifications(Pageable pageable) {
+        return notificationRepository.findAll(pageable)
+                .map(notificationMapper::toResponse);
     }
 
     public List<NotificationResponseDTO> findNotificationByStatus(NotificationStatus status) {

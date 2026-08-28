@@ -7,10 +7,12 @@ import com.notification.system.user.dto.UserResponseDTO;
 import com.notification.system.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -22,8 +24,15 @@ public class AdminController {
     private final FactorPercentageService factorPercentageService;
 
     @GetMapping("/all")
-    public List<UserResponseDTO> getUsers(){
-        return userService.getUsers();
+    public Page<UserResponseDTO> getUsers(
+            @PageableDefault(size = 20,sort = "createdAt",
+                    direction = Sort.Direction.DESC)
+            Pageable pageable
+    ){
+        if(pageable.getPageSize()>100){
+            throw new IllegalStateException("page size must not exceed 100");
+        }
+        return userService.getUsers(pageable);
     }
 
     @PostMapping

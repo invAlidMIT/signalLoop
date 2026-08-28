@@ -21,13 +21,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ScoringConfigService {
 
-    private static final Logger log = LoggerFactory.getLogger(ScoringConfigService.class);
     private final FactorPercentageRepository factorPercentageRepository;
     private final UrgencyWeightRepository urgencyWeightRepository;
 
     @Cacheable("scores-config")
     public ScoresConfig loadScores(){
-        log.info("Loading scoring config from DB");
+        log.info("Scores loaded from database");
                Map<Factor,Double> factorWeights = getFactorWeights();
                Map<String,Double> urgencyWeights = getUrgencyWeights();
                return new ScoresConfig(factorWeights,urgencyWeights);

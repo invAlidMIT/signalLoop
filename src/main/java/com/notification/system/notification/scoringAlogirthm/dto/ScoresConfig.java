@@ -1,8 +1,10 @@
 package com.notification.system.notification.scoringAlogirthm.dto;
 
 import com.notification.system.notification.scoringAlogirthm.enums.Factor;
-import com.notification.system.user.enums.Channel;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Map;

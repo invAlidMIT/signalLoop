@@ -4,9 +4,15 @@ package com.notification.system.notification.dto;
 import com.notification.system.notification.scoringAlogirthm.enums.Urgency;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class NotificationRequestDTO {
 
     private Long userId;

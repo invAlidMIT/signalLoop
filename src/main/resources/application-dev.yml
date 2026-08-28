@@ -1,10 +1,14 @@
 jwt:
   secretKey: ${JWT_SECRET}
+
 logging:
   level:
     org:
       hibernate:
         SQL: DEBUG
+      flywaydb: DEBUG
+      springframework.boot.autoconfigure.flyway: DEBUG
+
 spring:
   data:
     redis:
@@ -15,13 +19,17 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
   jpa:
-    defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
     show-sql: true
-  sql:
-    init:
-      mode: always
+
+info:
+  app:
+    name: signalLoop
+    description: Intelligent Event Driven Notification Platform
+    version: 1.0.0
+
+  developer: amit

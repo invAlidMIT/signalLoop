@@ -45,7 +45,7 @@ CREATE TABLE factor_percentage (
 
     factor VARCHAR(50) NOT NULL UNIQUE,
 
-    percentage NUMERIC(5,2) NOT NULL
+    percentage DOUBLE PRECISION NOT NULL
 );
 
 CREATE TABLE urgency_weight (
@@ -56,7 +56,7 @@ CREATE TABLE urgency_weight (
 
     channel VARCHAR(20) NOT NULL,
 
-    urgency_percentage NUMERIC(5,2) NOT NULL,
+    urgency_percentage DOUBLE PRECISION NOT NULL,
 
     CONSTRAINT uk_urgency_channel
         UNIQUE(urgency,channel)
@@ -68,11 +68,11 @@ CREATE TABLE notification_selection_audit (
 
     notification_id BIGINT NOT NULL,
 
-    email_score NUMERIC(5,2) NOT NULL,
+    email_score DOUBLE PRECISION NOT NULL,
 
-    sms_score NUMERIC(5,2) NOT NULL,
+    sms_score DOUBLE PRECISION NOT NULL,
 
-    push_score NUMERIC(5,2) NOT NULL,
+    push_score DOUBLE PRECISION NOT NULL,
 
     selected_channel VARCHAR(20) NOT NULL,
 
