@@ -1,7 +1,6 @@
 package com.notification.system.notification.strategy;
 
 import com.notification.system.user.enums.Channel;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class NotificationSenderFactory {
                         s->s));
     }
 
-    public NotificationSender getSender(Channel channel){
+            public NotificationSender getSender(Channel channel){
         return senderMap.get(channel);
     }
 }

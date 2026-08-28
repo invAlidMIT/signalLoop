@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,7 @@ public class NotificationService {
     private final NotificationAuditMapper notificationAuditMapper;
 
 
+    @Transactional
     public NotificationResponseDTO createNotification(NotificationRequestDTO requestDTO) {
         User user = userRepository.findById(requestDTO.getUserId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Notification notification = notificationMapper.toEntity(requestDTO);
