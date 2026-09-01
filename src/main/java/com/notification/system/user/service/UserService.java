@@ -37,7 +37,7 @@ public class UserService {
         User user= userMapper.toEntity(userRequestDTO);
         user.setRole(Role.ROLE_USER);
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-        User userSaved=userRepository.save(user);
+            User userSaved=userRepository.save(user);
         log.info("User created successfully with id={}", userSaved.getId());
         return userMapper.toResponse(userSaved);
     }
